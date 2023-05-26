@@ -74,13 +74,17 @@ export class TemplateBrowseComponent implements OnInit {
     /* update image thumbnail */
     // find old sku then replace with newSku
     const update = this.templateItems.value.map((item: any) => {
-      console.log({ item });
+      //  console.log({ item });
       if (item.itemNumber === itemNumber) {
-        console.log({ itemNumber });
+        // console.log({ itemNumber });
         item.itemNumber = newSku[0][0];
+        return item;
       }
     });
-    console.log({ update });
+    console.log(
+      'update',
+      update.filter((f: any) => f !== undefined)
+    );
   }
   // return?
 }
