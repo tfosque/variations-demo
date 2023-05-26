@@ -17,8 +17,8 @@
     <!-- SELECT -->
     <div class="col-auto"><input type="checkbox" /></div>
     <!-- IMG -->
-    <div class="col-1">
-      <div style="text-align: center">{{ item.itemNumber }}</div>
+    <div class="col-1" style="text-align: center">
+      <div>{{ item.itemNumber }}</div>
       <img
         width="70"
         [src]="
@@ -56,21 +56,38 @@
         class="col-auto my-2"
         *ngFor="let type of item.multiVariationData.allVariationTypes"
       >
-        <mat-form-field class="mx-0">
+        <!--  <mat-form-field class="mx-0">
           <mat-label>{{ type }}</mat-label>
           <mat-select
             #variations
             [value]="getCurrentSku(item, type)"
             (selectionChange)="handleSkuChange(item, type, variations.value)"
           >
-            <!-- OPTION -->
+           
             <mat-option
               *ngFor="let sku of getSkus(item, type); let i = index"
               [value]="sku"
               >{{ sku }}</mat-option
             >
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
+        <!-- /// -->
+
+        <select
+          #variations
+          [value]="getCurrentSku(item, type)"
+          (change)="handleSkuChange(item, type, variations.value)"
+          class="form-select"
+        >
+          <option
+            *ngFor="let sku of getSkus(item, type); let i = index"
+            [value]="sku"
+          >
+            {{ sku }}
+          </option>
+        </select>
+
+        <!-- /// -->
       </div>
     </section>
     <hr />

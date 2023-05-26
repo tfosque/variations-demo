@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
   template_gl92501052 as dataSrc,
@@ -11,7 +11,7 @@ import * as _ from 'lodash';
   templateUrl: './template-browse.component.html',
   styleUrls: ['./template-browse.component.scss'],
 })
-export class TemplateBrowseComponent implements OnInit {
+export class TemplateBrowseComponent implements OnInit, OnDestroy {
   data: any = dataSrc;
   multiVariationData: any = new BehaviorSubject<any>({});
   currSku = new BehaviorSubject<any>({});
@@ -32,10 +32,29 @@ export class TemplateBrowseComponent implements OnInit {
     console.log({ dataSrc }, { dataSrc2 });
     console.groupEnd();
   }
+
+  ngOnDestroy(): void {
+    console.log('Destroyed....');
+  }
+
+  /* getIfEmpty(valsku: any) {
+    console.log(':', { valsku });
+    if (valsku === 'select') {
+      console.log('getEmpty:', { valsku });
+      return 'select';
+    } else {
+      return valsku;
+    }
+  } */
   getCurrentSku(data: any, facet: any) {
     const res = data.multiVariationData.currentVariations[facet];
+    // if no selection has been made default to first sku and update table data
+    /* if (res === 'please_select') {
+      console.log('I am empty sku......', { res });
+      return 'select';
+    } */
     this.defaultSku.next(res);
-    // console.log({ res });
+    console.log({ facet }, { res });
     return res;
   }
 
@@ -69,22 +88,25 @@ export class TemplateBrowseComponent implements OnInit {
     const results = newSku[0][0];
     console.log('newSku', { results });
 
-    /* update changes to other variations */
-
-    /* update image thumbnail */
-    // find old sku then replace with newSku
-    const update = this.templateItems.value.map((item: any) => {
-      //  console.log({ item });
+    /* update image thumbnail // find old sku then replace with newSku */
+    const updateItemsSku = this.templateItems.value.map((item: any) => {
       if (item.itemNumber === itemNumber) {
-        // console.log({ itemNumber });
         item.itemNumber = newSku[0][0];
         return item;
       }
     });
     console.log(
       'update',
-      update.filter((f: any) => f !== undefined)
+      updateItemsSku.filter((f: any) => f !== undefined)
     );
+
+    /* update other variations */
+    // loop over other variations using skus list and update templateItems
+    Object.entries(skus).map((skuItem) => {
+      console.group();
+      console.log({ skuItem });
+      console.groupEnd();
+    });
   }
   // return?
 }
