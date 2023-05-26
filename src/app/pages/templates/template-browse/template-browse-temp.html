@@ -4,14 +4,10 @@
     <input type="checkbox" style="color: rgb(124, 69, 69)" />
 
     <!-- IMG -->
-    <div style="padding: 4px 10px">
-      <p style="text-align: center">{{ item.itemNumber }}</p>
-      <div>
-        <img
-          width="88"
-          [src]="baseImgUrl + item.imageUrl.thumbnail"
-          [alt]="item.itemNumber"
-        />
+    <div style="padding: 4px 10px; text-align: center">
+      <div style="text-align: center">
+        <p>{{ item.itemNumber }}</p>
+        <img width="88" [src]="baseImgUrl + item.imageUrl.thumbnail" [alt]="item.itemNumber" />
       </div>
     </div>
 
@@ -21,16 +17,10 @@
       <p>#{{ item.itemNumber }}</p>
       <p>Nickname: {{ item.nickname }}</p>
       <!-- Variations -->
-      <div
-        *ngFor="let v of item.multiVariationData.allVariationTypes"
-        style="display: inline-block"
-      >
+      <div *ngFor="let v of item.multiVariationData.allVariationTypes" style="display: inline-block">
         <label style="color: black">{{ v }}</label>
         <select style="color: black" style="width: 28vw">
-          <option
-            *ngFor="let sku of getCurrentSkus(item, v)"
-            [value]="item.productName"
-          >
+          <option *ngFor="let sku of getCurrentSkus(item, v)" [value]="item.productName">
             {{ sku }}
           </option>
         </select>
