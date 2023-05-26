@@ -37,7 +37,9 @@
       <div style="text-align: center">{{ item.itemNumber }}</div>
       <img
         width="70"
-        [src]="baseImgUrl + item.imageUrl.thumbnail"
+        [src]="
+          baseImgUrl + '/images/large/' + item.itemNumber + '_default_thumb.jpg'
+        "
         [alt]="item.itemNumber"
       />
     </div>
@@ -45,9 +47,8 @@
       <!-- DETAILS -->
       <div class="row">
         <div class="col-12">
-          <h3>{{ item.itemOrProductDescription }}</h3>
+          <h3 class="mb-1">{{ item.itemOrProductDescription }}</h3>
         </div>
-        <div class="col-12">#{{ item.itemNumber }}</div>
         <div class="col-12 mb-2">Nickname:</div>
         <div
           class="col-4"
@@ -55,7 +56,11 @@
         >
           <mat-form-field style="max-width: 166px">
             <mat-label>{{ type }}</mat-label>
-            <mat-select #variations [value]="getCurrentSku(item, type)">
+            <mat-select
+              #variations
+              [value]="getCurrentSku(item, type)"
+              (selectionChange)="handleSkuChange(item, type, variations.value)"
+            >
               <!-- OPTION -->
               <mat-option
                 *ngFor="let sku of getSkus(item, type); let i = index"

@@ -52,4 +52,35 @@ export class TemplateBrowseComponent implements OnInit {
     // console.log({ list });
     return _.uniq(list);
   }
+
+  handleSkuChange(item: any, type: string, selectedValue: any) {
+    const { skus } = item.multiVariationData;
+    const { itemNumber } = item;
+
+    // use selectedValue to find the sku in the list of skus
+    // get newSku
+    const newSku = Object.entries(skus).filter((sku: any) => {
+      /*  console.group();
+      console.log('sku[type]', sku[1][type][0]);
+      console.log({ item }, { type }, { selectedValue });
+      console.groupEnd(); */
+      return sku[1][type][0] === selectedValue;
+    });
+    const results = newSku[0][0];
+    console.log('newSku', { results });
+
+    /* update changes to other variations */
+
+    /* update image thumbnail */
+    // find old sku then replace with newSku
+    const update = this.templateItems.value.map((item: any) => {
+      console.log({ item });
+      if (item.itemNumber === itemNumber) {
+        console.log({ itemNumber });
+        item.itemNumber = newSku[0][0];
+      }
+    });
+    console.log({ update });
+  }
+  // return?
 }
