@@ -32,24 +32,28 @@ export class TemplateBrowseComponent implements OnInit {
     console.log( { dataSrc }, { dataSrc2 } );
     console.groupEnd();
   }
-  getCurrentSku( data: any, facet: any ) {
+  getDefaultSku( data: any, facet: any ) {
     const res = data.multiVariationData.currentVariations[facet];
     this.defaultSku.next( res );
-    // console.log({ res });
-    return res;
+    console.log( data.itemNumber, { res } );
+    // return default value of [0] if empty
+    return res !== 'please_select' ? res : 'select';
   }
 
   getSkus( data: any, facet: any ) {
-    // loop over allVariations
+    // loop over allVariations // has to match items[value] for default selections
     const list = Object.entries( data.multiVariationData.skus ).map(
       ( item: any ) => {
-        /*  console.group();
-        console.log(item[1][facet][0]);
-        console.groupEnd(); */
+        /*   console.group();
+          console.log( 'itemNumber:', item )
+          console.log( item[1] )
+          console.log( item[1][facet][0] );
+          console.groupEnd(); */
         return item[1][facet][0];
       }
     );
-    // console.log({ list });
+    //console.log( { list }, 'uniq:', _.uniq( list ) );
+    // TODO how do i sort without affecting default or current selection
     return _.uniq( list );
   }
 
@@ -57,8 +61,7 @@ export class TemplateBrowseComponent implements OnInit {
     const { skus } = item.multiVariationData;
     const { itemNumber } = item;
 
-    // use selectedValue to find the sku in the list of skus
-    // get newSku
+    // use selectedValue to find the sku in the list of skus --// get newSku
     const newSku = Object.entries( skus ).filter( ( sku: any ) => {
       /*  console.group();
       console.log('sku[type]', sku[1][type][0]);
@@ -70,6 +73,8 @@ export class TemplateBrowseComponent implements OnInit {
     console.log( 'newSku', { results } );
 
     /* update changes to other variations */
+    /* if other variations value is equal to 'please_select' then use [0] first item */
+
 
     /* update image thumbnail */
     // find old sku then replace with newSku
@@ -86,6 +91,16 @@ export class TemplateBrowseComponent implements OnInit {
       update.filter( ( f: any ) => f !== undefined )
     );
     // return?
+  }
+
+  sortList( objectArray: any ) {
+    const jsSort = objectArray.sort( function ( a: any, b: any ) {
+      var textA = a[0].toUpperCase();
+      var textB = b[0].toUpperCase();
+      return ( textA < textB ) ? -1 : ( textA > textB ) ? 1 : 0;
+    } );
+    // console.log( { jsSort } );
+    return jsSort;
   }
 
   /* getMatches() {

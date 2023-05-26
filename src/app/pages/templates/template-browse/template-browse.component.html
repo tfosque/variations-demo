@@ -49,14 +49,21 @@
       <div class="col-auto">&nbsp;</div>
       <div class="col-1">&nbsp;</div>
       <div class="col-auto my-2" *ngFor="let type of item.multiVariationData.allVariationTypes">
-        <mat-form-field class="mx-0">
+        <!-- <mat-form-field class="mx-0">
           <mat-label>{{ type }}</mat-label>
-          <mat-select #variations [value]="getCurrentSku(item, type)"
+          <mat-select #variations [value]="getDefaultSku(item, type)"
             (selectionChange)="handleSkuChange(item, type, variations.value)">
-            <!-- OPTION -->
             <mat-option *ngFor="let sku of getSkus(item, type); let i = index" [value]="sku">{{ sku }}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
+        <!-- /// -->
+        <select #variations [value]="getDefaultSku(item, type)" (change)="handleSkuChange(item, type, variations.value)"
+          class="form-select">
+          <option *ngFor="let sku of getSkus(item, type); let i = index" [value]="sku">
+            {{ sku }}
+          </option>
+        </select>
+        <!-- /// -->
       </div>
     </section>
     <hr />
